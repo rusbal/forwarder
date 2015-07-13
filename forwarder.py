@@ -162,7 +162,12 @@ timestamp = process_mailbox(M)
 M.close() 
 M.logout()
  
-if process_count > 0:
+if process_count == 0:
+    if not IS_VERBOSE:
+        print "### REPORT"
+        print "New:", process_count
+else:
     print
-print "### REPORT"
-print "New:", process_count
+    print "### REPORT"
+    print "New:", process_count
+
