@@ -14,9 +14,12 @@ import email
 import email.header
 import datetime
 
+from mail_gmx_sender import send_gmx_mail
+from mail_gmail_sender import send_gmail_mail
+from mail_yahoo_sender import send_yahoo_mail
+
 from secrets import *
 from settings import *
-from mail_yahoo_sender import send_yahoo_mail
  
 
 """
@@ -75,13 +78,21 @@ def process_email(num, data, last_timestamp):
 def print_email(campus, num, subject, raw_date, body):
     if campus == "kidsplus":
         for recipient in EMAIL_KIDSPLUS_RECIPIENTS:
-            send_yahoo_mail(recipient, subject, body)
+            send_email(recipient, subject, body)
 
     elif campus == "erlenbach":
         for recipient in EMAIL_ERLENBACH_RECIPIENTS:
-            send_yahoo_mail(recipient, subject, body)
+            send_email(recipient, subject, body)
 
     print '* %s (%s): %s' % (num, raw_date, subject)
+
+def send_email(recipient, subject, body):
+    if SMTP_PROVIDER == "gmx":
+        send_gmx_mail(recipient, subject, body)
+    elif SMTP_PROVIDER == "gmail":
+        send_gmail_mail(recipient, subject, body)
+    elif SMTP_PROVIDER == "yahoo":
+        send_yahoo_mail(recipient, subject, body)
 
 def process_mailbox(M):
     """
