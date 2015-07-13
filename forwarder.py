@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 #
 # Very basic example of using Python and IMAP to iterate over emails in a
 # gmail folder/label.  This code is released into the public domain.
