@@ -127,8 +127,8 @@ def process_mailbox(M):
         rv, data = M.fetch(num, '(RFC822)')
         if rv == 'OK':
             timestamp = process_email(num, data, last_timestamp) 
-            # if timestamp == 0:
-            #     break
+            if timestamp == 0:
+                break
         else:
             print "ERROR getting message", num
             return
