@@ -7,7 +7,7 @@ from secrets import *
  
 def send_gmail_mail(to_addr, subject, body):
     msg = MIMEMultipart()
-    msg['From'] = EMAIL_ACCOUNT
+    msg['From'] = EMAIL_GMAIL_SEND_ACCOUNT
     msg['To'] = to_addr
     msg['Subject'] = subject
      
@@ -15,8 +15,8 @@ def send_gmail_mail(to_addr, subject, body):
      
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
-    server.login(EMAIL_ACCOUNT, EMAIL_PASSWORD)
+    server.login(EMAIL_GMAIL_SEND_ACCOUNT, EMAIL_GMAIL_SEND_PASSWORD)
     text = msg.as_string()
-    server.sendmail(EMAIL_ACCOUNT, to_addr, text)
+    server.sendmail(EMAIL_GMAIL_SEND_ACCOUNT, to_addr, text)
     server.quit()
 

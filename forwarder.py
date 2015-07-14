@@ -39,17 +39,29 @@ def read_last_timestamp():
     except:
         return 0
 
+def get_email_date_tuple(msg):
+    date_tuple = email.utils.parsedate_tz(msg['Date'])
+
+    if date_tuple:
+        return date_tuple
+
+    try_date = msg['Received'].splitlines()[-1].strip()
+    date_tuple = email.utils.parsedate_tz(try_date)
+    return date_tuple
+
 def process_email(num, data, last_timestamp):
     global process_count, is_timestamp_logged
 
     msg = email.message_from_string(data[0][1])
+    message = msg.get_payload()
     decode = email.header.decode_header(msg['Subject'])[0]
     subject = unicode(decode[0])
 
-    # Now convert to local date-time
-    date_tuple = email.utils.parsedate_tz(msg['Date'])
     local_date = None
     email_timestamp = 0
+
+    # Now convert to local date-time
+    date_tuple = get_email_date_tuple(msg)
 
     if date_tuple:
         local_date = datetime.datetime.fromtimestamp(email.utils.mktime_tz(date_tuple))
@@ -65,14 +77,16 @@ def process_email(num, data, last_timestamp):
                 save_last_timestamp(email_timestamp)
 
             if subject == EMAIL_KIDSPLUS_SUBJECT:
-                print_email("kidsplus", num, subject, msg['Date'], msg.get_payload())
+                print_email("kidsplus", num, subject, msg['Date'], message)
                 process_count += 1
             elif subject == EMAIL_ERLENBACH_SUBJECT:
-                print_email("erlenbach", num, subject, msg['Date'], msg.get_payload())
+                print_email("erlenbach", num, subject, msg['Date'], message)
                 process_count += 1
             else:
                 print "-"
 
+    if IS_VERBOSE:
+        print "Email timestamp:", email_timestamp
     return email_timestamp
 
 def print_email(campus, num, subject, raw_date, body):
@@ -108,11 +122,13 @@ def process_mailbox(M):
     last_timestamp = read_last_timestamp()
 
     for num in data[0].split()[::-1]:
+        if IS_VERBOSE:
+            print "Processing mail:", num
         rv, data = M.fetch(num, '(RFC822)')
         if rv == 'OK':
             timestamp = process_email(num, data, last_timestamp) 
-            if timestamp == 0:
-                break
+            # if timestamp == 0:
+            #     break
         else:
             print "ERROR getting message", num
             return

@@ -1,6 +1,9 @@
 """
 Settings
 """
+
+IS_VERBOSE = False
+TIMESTAMP_FILE = "last_fetch_timestamp.log"
 EMAIL_LIMIT = 0
 EMAIL_FOLDER = "INBOX" 
 
@@ -18,8 +21,5 @@ EMAIL_ERLENBACH_SUBJECT = "Erlenbach: Anmeldeformular auf der Internetseite"
 # EMAIL_ERLENBACH_RECIPIENTS = ["raymond@philippinedev.com", "info.erlenbach@kidsplus.ch"]
 EMAIL_ERLENBACH_RECIPIENTS = ["raymond@philippinedev.com"]
 
-TIMESTAMP_FILE = "last_fetch_timestamp.log"
-IS_VERBOSE = False 
-
-SMTP_PROVIDER = "gmx"
+SMTP_PROVIDER = "gmail"
 

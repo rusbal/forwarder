@@ -16,14 +16,19 @@ def send_gmx_mail(to_addr, subject, body):
 
     msg = "%s\n%s\n%s\n%s\n\n%s" % (msg_1, msg_2, msg_3, msg_4, msg_5,)
 
-    try :
-        server = smtplib.SMTP_SSL(EMAIL_GMX_SMTP, EMAIL_GMX_PORT)
-        server.ehlo
-        server.login(EMAIL_GMX_SEND_ACCOUNT, EMAIL_GMX_SEND_PASSWORD)
-        server.sendmail(from_email, to_addr, msg)
-        server.quit()
-
-        print ('* [%s]' % to_addr),
-    except :
-        print ('* [%s SENDING ERROR]' % to_addr),
+    server = smtplib.SMTP_SSL(EMAIL_GMX_SMTP, EMAIL_GMX_PORT)
+    server.ehlo
+    server.login(EMAIL_GMX_SEND_ACCOUNT, EMAIL_GMX_SEND_PASSWORD)
+    server.sendmail(from_email, to_addr, msg)
+    server.quit()
+    # try :
+    #     server = smtplib.SMTP_SSL(EMAIL_GMX_SMTP, EMAIL_GMX_PORT)
+    #     server.ehlo
+    #     server.login(EMAIL_GMX_SEND_ACCOUNT, EMAIL_GMX_SEND_PASSWORD)
+    #     server.sendmail(from_email, to_addr, msg)
+    #     server.quit()
+    #
+    #     print ('* [%s]' % to_addr),
+    # except :
+    #     print ('* [%s SENDING ERROR]' % to_addr),
 
